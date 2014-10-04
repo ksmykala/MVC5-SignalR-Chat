@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model  string[]
 
 @{
     ViewBag.Title = "Chat";
@@ -13,7 +13,12 @@
 </div>
 <div class="container">
     <h2>Logged users</h2>
-    <ul class="list-unstyled" id="loggedusers"></ul>
+    <ul class="list-unstyled" id="loggedusers">
+        @foreach (var loggedUser in @Model)
+        {
+            <li>@loggedUser</li>
+        }
+    </ul>
 </div>
 
 @section scripts
@@ -23,20 +28,26 @@
     <script>
         $(function() {
             var chat = $.connection.chatHub;
-            chat.client.addNewMessageToPage = function (name, message) {
+            var users = $.connection.userActivityHub;
+
+            chat.client.addNewMessageToPage = function(name, message) {
                 $("#discussion").append('<li><strong>' + htmlEncode(name) + '</strong>: '
                     + htmlEncode(message) + '</li>');
             };
 
-            chat.client.updateLoggedUsers = function(name) {
-                $('#loggedusers').append('<li>' + htmlEncode(name) + '</li>');
+            users.client.updateLoggedUsers = function (users) {
+                $('#loggedusers').val('<li>go: </li>');
+                $.each(users, function (index, value) {
+                    $('#loggedusers').append('<li>' + htmlEncode(value) + '</li>');
+                });
+                //$('#loggedusers').append('<li>' + htmlEncode(users) + '</li>');
             };
 
             $('#displayname').val(prompt('Enter your name:', ''));
             $('#message').focus();
 
-            $.connection.hub.start().done(function () {
-                chat.server.addLoggedUser($('#displayname').val());
+            $.connection.hub.start().done(function() {
+                users.server.addLoggedUser($('#displayname').val());
 
                 $('#sendmessage').click(function() {
                     chat.server.send($('#displayname').val(), $('#message').val());
@@ -44,6 +55,7 @@
                 });
             });
         });
+
         function htmlEncode(value) {
             var encodedValue = $('<div />').text(value).html();
             return encodedValue;

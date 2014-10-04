@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using SignalR_Mvc5.Repository;
 
 namespace SignalR_Mvc5.Controllers
 {
     public class HomeController : Controller
     {
-        //
-        // GET: /Home/
+        private IUserRepository _userRepository;
+
+        public HomeController(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -17,7 +19,8 @@ namespace SignalR_Mvc5.Controllers
 
         public ViewResult Chat()
         {
-            return View();
+            var loggedUsers = _userRepository.GetAllUsers();
+            return View(loggedUsers);
         }
 	}
 }
