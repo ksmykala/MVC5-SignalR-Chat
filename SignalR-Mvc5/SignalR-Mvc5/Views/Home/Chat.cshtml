@@ -36,11 +36,10 @@
             };
 
             users.client.updateLoggedUsers = function (users) {
-                $('#loggedusers').val('<li>go: </li>');
+                $('#loggedusers').html('');
                 $.each(users, function (index, value) {
                     $('#loggedusers').append('<li>' + htmlEncode(value) + '</li>');
                 });
-                //$('#loggedusers').append('<li>' + htmlEncode(users) + '</li>');
             };
 
             $('#displayname').val(prompt('Enter your name:', ''));

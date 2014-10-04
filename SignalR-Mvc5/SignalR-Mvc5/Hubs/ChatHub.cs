@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNet.SignalR;
-using SignalR_Mvc5.Repository;
+﻿using Microsoft.AspNet.SignalR;
+using System.Collections.Generic;
 
 namespace SignalR_Mvc5.Hubs
 {
