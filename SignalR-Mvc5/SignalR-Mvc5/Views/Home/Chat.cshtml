@@ -1,0 +1,52 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Chat";
+}
+
+<div class="container">
+    <h2>Chat</h2>
+    <input type="text" id="message"/>
+    <input type="button" id="sendmessage" value="Send!"/>
+    <input type="hidden" id="displayname"/>
+    <ul class="list-unstyled" id="discussion"></ul>
+</div>
+<div class="container">
+    <h2>Logged users</h2>
+    <ul class="list-unstyled" id="loggedusers"></ul>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.signalR-2.1.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        $(function() {
+            var chat = $.connection.chatHub;
+            chat.client.addNewMessageToPage = function (name, message) {
+                $("#discussion").append('<li><strong>' + htmlEncode(name) + '</strong>: '
+                    + htmlEncode(message) + '</li>');
+            };
+
+            chat.client.updateLoggedUsers = function(name) {
+                $('#loggedusers').append('<li>' + htmlEncode(name) + '</li>');
+            };
+
+            $('#displayname').val(prompt('Enter your name:', ''));
+            $('#message').focus();
+
+            $.connection.hub.start().done(function () {
+                chat.server.addLoggedUser($('#displayname').val());
+
+                $('#sendmessage').click(function() {
+                    chat.server.send($('#displayname').val(), $('#message').val());
+                    $('#message').val('').focus();
+                });
+            });
+        });
+        function htmlEncode(value) {
+            var encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
+    </script>
+}
