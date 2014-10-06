@@ -754,3 +754,15 @@ tr.pager td {
             margin: 0;
         }
 }
+
+
+/* custom styles
+----------------------------------------------------------*/
+
+.logged-users-countainer {
+    background-color: whitesmoke;
+    padding: 2em 1em;
+
+    -ms-border-radius: 1em;
+    border-radius: 1em;
+}

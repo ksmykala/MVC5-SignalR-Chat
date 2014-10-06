@@ -1,54 +1,27 @@
 ﻿@{
     ViewBag.Title = "Chat";
 }
-
-<h2>Chat</h2>
-
-<div class="input-group" style="margin-bottom: 2em;">
-    <input type="text" id="message" class="form-control"/>
-    <span class="input-group-btn">
-        <button type="button" id="sendmessage" class="btn btn-danger">Send</button>
-    </span>
+<div class="row">
+    <div class="col-lg-8">
+        <h2>Chat</h2>
+        <div class="input-group" style="margin-bottom: 2em;">
+            <input type="text" id="message" class="form-control" />
+            <span class="input-group-btn">
+                <button type="button" id="sendmessage" class="btn btn-danger">Send</button>
+            </span>
+        </div>
+        <ul id="discussion" class="list-group"></ul>
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-3 logged-users-countainer">
+        <h4>Connected Users (<span id="connectedUsers">0</span>):</h4>
+        <ul id="logged-users" class="list-group"></ul>
+    </div>
 </div>
-
-<ul id="discussion" class="list-unstyled">
-</ul>
 
 @section scripts
 {
     <script src="~/Scripts/jquery.signalR-2.1.2.js"></script>
     <script src="~/signalr/hubs"></script>
-
-    <script>
-        $(function() {
-            var chat = $.connection.chatHub;
-
-            chat.client.addNewMessage = function(name, message) {
-                $('#discussion').append('<li class="alert alert-info" style="padding: 1px; margin-bottom: 0;"><strong>' + htmlEncode(name) + '</strong>: '
-                    + htmlEncode(message) + '</li>');
-            };
-
-            $('#message').focus();
-
-            $.connection.hub.start().done(function () {
-                $('#message').keypress(function (e) {
-                    if (e.keyCode == 13)
-                        sendMessage();
-                });
-                $('#sendmessage').click(function() {
-                    sendMessage();
-                });
-
-                function sendMessage() {
-                    chat.server.send($('#message').val());
-                    $('#message').val('').focus();
-                }
-            });
-        });
-
-        function htmlEncode(value) {
-            var encodedValue = $('<div />').text(value).html();
-            return encodedValue;
-        }
-    </script>
+    <script src="~/Scripts/ChatScripts/MainChatScript.js"></script>
 }
