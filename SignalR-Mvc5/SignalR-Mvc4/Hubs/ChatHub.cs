@@ -1,5 +1,8 @@
 ﻿using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
+using System.Web.Http.OData.Builder;
+using System.Web.Mvc.Html;
 using Microsoft.AspNet.SignalR;
 using SignalR_Mvc4.Infrastructure;
 
@@ -33,8 +36,8 @@ namespace SignalR_Mvc4.Hubs
 
             var message = string.Format("{0} has joined", Context.User.Identity.Name);
             Clients.AllExcept(Context.ConnectionId).addNewMessage("Server", message, "success");
-
-            Clients.All.showLoggedUsers(UserHandler.ConnectedUsers.OrderBy(x => x.UserName).Select(x => x.UserName).Distinct().ToArray());
+            
+            Clients.All.showLoggedUsers(UserHandler.ConnectedUsers.OrderBy(x => x.UserName).Select(x => x.ConnectionId).ToArray());
 
             return base.OnConnected();
         }

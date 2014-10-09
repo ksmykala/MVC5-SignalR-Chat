@@ -5,7 +5,6 @@
 }
 
 <div class="row">
-    <div class="col-lg-8">
         @Html.HiddenFor(x => x.ConnectionId)
         <h2>Private Chat with <strong>@Html.DisplayFor(x => x.UserName)</strong></h2>
         <div class="input-group" style="margin-bottom: 2em;">
@@ -15,12 +14,6 @@
             </span>
         </div>
         <ul id="discussion" class="list-group"></ul>
-    </div>
-    <div class="col-lg-1"></div>
-    <div class="col-lg-3 logged-users-countainer">
-        <h4>Connected Users (<span id="connectedUsers">0</span>):</h4>
-        <ul id="logged-users" class="list-group"></ul>
-    </div>
 </div>
 
 @section scripts

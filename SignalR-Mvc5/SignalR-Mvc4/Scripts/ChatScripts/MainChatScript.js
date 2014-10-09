@@ -12,15 +12,26 @@
         $('#connectedUsers').html(count);
     };
 
-    chat.client.showLoggedUsers = function (names) {
+    chat.client.showLoggedUsers = function (ids) {
         var $loggedUsersContainer = $('#logged-users');
         $loggedUsersContainer.html('');
 
-        $.each(names, function (index, name) {
-            var $userListElement = '<li class="alert alert-default list-group-item" style="padding: 1px; margin-bottom: 0;">'
-                + htmlEncode(name) + '</li>';
-            $loggedUsersContainer.append($userListElement);
+        var $listItemTemplateUrl = $loggedUsersContainer.data('url');
+
+        $.each(ids, function (index, id) {
+            $.get($listItemTemplateUrl,
+            {id: id},
+            function(result) {
+                $loggedUsersContainer.append(result);
+            },
+            'html');
         });
+
+        //$.each(names, function (index, name) {
+        //    var $userListElement = '<li class="alert alert-default list-group-item" style="padding: 1px; margin-bottom: 0;">'
+        //        + htmlEncode(name) + '</li>';
+        //    $loggedUsersContainer.append($userListElement);
+        //});
     };
 
     $('#message').focus();
