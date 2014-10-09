@@ -37,7 +37,9 @@
         });
 
         function sendMessage() {
-            chat.server.send($('#message').val());
+            var connectionId = $('#ConnectionId').val();
+            chat.server.send($('#message').val(), connectionId);
+            
             $('#message').val('').focus();
         }
     });

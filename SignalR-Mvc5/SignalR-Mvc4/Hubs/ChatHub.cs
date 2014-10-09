@@ -7,15 +7,20 @@ namespace SignalR_Mvc4.Hubs
 {
     public class ChatHub : Hub
     {
-        public void Send(string message)
+        public void Send(string message, string connectionId)
         {
             var name = Context.User.Identity.Name;
-            Clients.All.addNewMessage(name, message);
+
+            if (connectionId == null)
+                Clients.All.addNewMessage(name, message);
+            else
+                Clients.Client(connectionId).addNewMessage(string.Format("{0}(priv)", name), message);
         }
 
         public void GetClientsCount()
         {
-            Clients.All.showClientsCount(UserHandler.ConnectedUsers.Count);
+            var count = UserHandler.ConnectedUsers.Select(x => x.UserName).Distinct().Count();
+            Clients.All.showClientsCount(count);
         }
 
         public override Task OnConnected()
@@ -29,7 +34,7 @@ namespace SignalR_Mvc4.Hubs
             var message = string.Format("{0} has joined", Context.User.Identity.Name);
             Clients.AllExcept(Context.ConnectionId).addNewMessage("Server", message, "success");
 
-            Clients.All.showLoggedUsers(UserHandler.ConnectedUsers.OrderBy(x => x.UserName).Select(x => x.UserName).ToArray());
+            Clients.All.showLoggedUsers(UserHandler.ConnectedUsers.OrderBy(x => x.UserName).Select(x => x.UserName).Distinct().ToArray());
 
             return base.OnConnected();
         }
@@ -42,7 +47,7 @@ namespace SignalR_Mvc4.Hubs
             var message = string.Format("{0} has left", Context.User.Identity.Name);
             Clients.All.addNewMessage("Server", message, "danger");
 
-            Clients.All.showLoggedUsers(UserHandler.ConnectedUsers.Select(x => x.UserName).ToArray());
+            Clients.All.showLoggedUsers(UserHandler.ConnectedUsers.Select(x => x.UserName).Distinct().ToArray());
 
             return base.OnDisconnected(stopCalled);
         }

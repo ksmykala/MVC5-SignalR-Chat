@@ -1,0 +1,31 @@
+﻿@model SignalR_Mvc4.Infrastructure.User
+
+@{
+    ViewBag.Title = string.Format("{0} - private chat", Html.DisplayFor(x=>x.UserName));
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        @Html.HiddenFor(x => x.ConnectionId)
+        <h2>Private Chat with <strong>@Html.DisplayFor(x => x.UserName)</strong></h2>
+        <div class="input-group" style="margin-bottom: 2em;">
+            <input type="text" id="message" class="form-control" />
+            <span class="input-group-btn">
+                <button type="button" id="send-private-message" class="btn btn-danger">Send</button>
+            </span>
+        </div>
+        <ul id="discussion" class="list-group"></ul>
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-3 logged-users-countainer">
+        <h4>Connected Users (<span id="connectedUsers">0</span>):</h4>
+        <ul id="logged-users" class="list-group"></ul>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.signalR-2.1.2.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/ChatScripts/MainChatScript.js"></script>
+}
