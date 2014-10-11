@@ -1,0 +1,40 @@
+﻿.logged-users-countainer {
+    background-color: whitesmoke;
+    padding: 2em 1em;
+
+    -ms-border-radius: 1em;
+    border-radius: 1em;
+}
+
+.private-chat-container {
+    position: absolute;
+    bottom: 0;
+    right: 5%;
+    width: 250px;
+    height: 300px;
+    background-color: whitesmoke;
+}
+
+.private-chat-header {
+    height: 11%;
+    background-color: #428BEB;
+    color: whitesmoke;
+    padding: 5px;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.private-discussion-container {
+    height: 75%;
+    padding: 5px 5px 0 5px;
+}
+
+.private-discussion {
+    background-color: gray;
+}
+
+.private-message-box {
+    height: 10%;
+    padding: 5px 5px 0 5px;
+}

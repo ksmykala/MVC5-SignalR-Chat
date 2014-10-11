@@ -50,7 +50,7 @@ namespace SignalR_Mvc4.Hubs
             var message = string.Format("{0} has left", Context.User.Identity.Name);
             Clients.All.addNewMessage("Server", message, "danger");
 
-            Clients.All.showLoggedUsers(UserHandler.ConnectedUsers.Select(x => x.UserName).Distinct().ToArray());
+            Clients.All.showLoggedUsers(UserHandler.ConnectedUsers.OrderBy(x => x.UserName).Select(x => x.ConnectionId).ToArray());
 
             return base.OnDisconnected(stopCalled);
         }

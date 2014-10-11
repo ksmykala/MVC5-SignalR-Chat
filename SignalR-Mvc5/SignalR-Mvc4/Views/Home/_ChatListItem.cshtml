@@ -2,7 +2,7 @@
 
 
 <li class="list-group-item" style="padding: 1px; margin-bottom: 0;">
-    <a class="btn btn-xs" style="width: 100%" href="@Url.Action("PrivChat", "Home", new { id = Model.ConnectionId })">
+    <div class="btn btn-xs" style="width: 100%" onclick="showPrivateChat('@(Url.Action("PrivChat", "Home", new { id = Model.ConnectionId }))')">
         @Model.UserName
-    </a>
+    </div>
 </li>

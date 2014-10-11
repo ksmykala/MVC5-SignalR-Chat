@@ -6,7 +6,6 @@
 
 body {
     background-color: #fff;
-    border-top: solid 10px #000;
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
@@ -123,6 +122,7 @@ footer {
     background-color: #e2e2e2;
     font-size: .8em;
     height: 100px;
+    bottom: 0;
 }
 
 
@@ -753,16 +753,4 @@ tr.pager td {
         footer p {
             margin: 0;
         }
-}
-
-
-/* custom styles
-----------------------------------------------------------*/
-
-.logged-users-countainer {
-    background-color: whitesmoke;
-    padding: 2em 1em;
-
-    -ms-border-radius: 1em;
-    border-radius: 1em;
 }

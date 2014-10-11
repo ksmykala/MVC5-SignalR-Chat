@@ -26,12 +26,6 @@
             },
             'html');
         });
-
-        //$.each(names, function (index, name) {
-        //    var $userListElement = '<li class="alert alert-default list-group-item" style="padding: 1px; margin-bottom: 0;">'
-        //        + htmlEncode(name) + '</li>';
-        //    $loggedUsersContainer.append($userListElement);
-        //});
     };
 
     $('#message').focus();
@@ -59,4 +53,17 @@
 function htmlEncode(value) {
     var encodedValue = $('<div />').text(value).html();
     return encodedValue;
+}
+
+function showPrivateChat(url) {
+    $.get(url,
+        function(result) {
+            $('#private-dicusssions-handler').append(result);
+            result.find('#private-message').focus();
+        },
+        'html');
+}
+
+function removeElement(selector) {
+    $(selector).remove();
 }

@@ -1,24 +1,19 @@
 ﻿@model SignalR_Mvc4.Infrastructure.User
 
-@{
-    ViewBag.Title = string.Format("{0} - private chat", Html.DisplayFor(x=>x.UserName));
-}
-
-<div class="row">
-        @Html.HiddenFor(x => x.ConnectionId)
-        <h2>Private Chat with <strong>@Html.DisplayFor(x => x.UserName)</strong></h2>
-        <div class="input-group" style="margin-bottom: 2em;">
-            <input type="text" id="message" class="form-control" />
-            <span class="input-group-btn">
-                <button type="button" id="send-private-message" class="btn btn-danger">Send</button>
-            </span>
-        </div>
-        <ul id="discussion" class="list-group"></ul>
+<div id="priv-@Model.ConnectionId" class="private-chat-container">
+    <div class="private-chat-header">Priv with 
+        @Model.UserName
+        <button type="button" class="close" onclick="removeElement('#priv-@Model.ConnectionId')">
+            <span class="glyphicon glyphicon-remove-circle"></span>
+        </button>
+    </div>
+    <div class="private-discussion-container">
+        <ul id="private-discussion" class="list-group"></ul>
+    </div>
+    <div class="input-group input-group-sm private-message-box">
+        <input type="text" id="private-message" placeholder="Write your message..." class="form-control" />
+        <span class="input-group-btn">
+            <button type="button" id="sendmessage" class="btn btn-primary btn-sm">Send</button>
+        </span>
+    </div>
 </div>
-
-@section scripts
-{
-    <script src="~/Scripts/jquery.signalR-2.1.2.js"></script>
-    <script src="~/signalr/hubs"></script>
-    <script src="~/Scripts/ChatScripts/MainChatScript.js"></script>
-}
