@@ -1,11 +1,25 @@
-﻿$(function () {
-    var chat = $.connection.chatHub;
+﻿var chat;
 
-    chat.client.addNewMessage = function (name, message, alertStyle) {
-        if (typeof (alertStyle) === "undefined") alertStyle = 'default';
-        $('#discussion').append('<li class="alert alert-' + alertStyle + ' list-group-item" style="padding: 1px; margin-bottom: 0;"><strong>'
+$(function () {
+    chat = $.connection.chatHub;
+
+    chat.client.addNewMessage = function (name, message) {
+        $('#discussion').append('<li class="alert list-group-item" style="padding: 1px; margin-bottom: 0;"><strong>'
             + htmlEncode(name) + '</strong>: '
             + htmlEncode(message) + '</li>');
+    };
+
+    chat.client.addPrivateMessage = function (name, message, senderId) {
+        if (document.getElementById('private-' + senderId) == null) {
+            var message = '<li class="alert list-group-item" style="padding: 1px; margin-bottom: 0;"><strong>'
+                + htmlEncode(name) + '</strong>: '
+                + htmlEncode(message) + '</li>';
+            showPrivateChat(senderId, message);
+        } else {
+            $('#private-' + senderId + ' #private-discussion').append('<li class="alert list-group-item" style="padding: 1px; margin-bottom: 0;"><strong>'
+                + htmlEncode(name) + '</strong>: '
+                + htmlEncode(message) + '</li>');
+        }
     };
 
     chat.client.showClientsCount = function (count) {
@@ -41,10 +55,8 @@
             sendMessage();
         });
 
-        function sendMessage() {
-            var connectionId = $('#ConnectionId').val();
+        function sendMessage(connectionId) {
             chat.server.send($('#message').val(), connectionId);
-            
             $('#message').val('').focus();
         }
     });
@@ -55,11 +67,15 @@ function htmlEncode(value) {
     return encodedValue;
 }
 
-function showPrivateChat(url) {
+function showPrivateChat(connectionId, message) {
+    var $privateDiscussionHandler = $('#private-dicussions-handler');
+    var url = $privateDiscussionHandler.data('url');
+
     $.get(url,
+        {id: connectionId},
         function(result) {
-            $('#private-dicusssions-handler').append(result);
-            result.find('#private-message').focus();
+            $privateDiscussionHandler.append(result);
+            $('#private-' + connectionId + ' #private-discussion').append(message);
         },
         'html');
 }

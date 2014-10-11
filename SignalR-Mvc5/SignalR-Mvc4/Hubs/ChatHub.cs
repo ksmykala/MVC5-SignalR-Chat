@@ -1,23 +1,24 @@
-﻿using System.Linq;
-using System.Security.Policy;
-using System.Threading.Tasks;
-using System.Web.Http.OData.Builder;
-using System.Web.Mvc.Html;
-using Microsoft.AspNet.SignalR;
+﻿using Microsoft.AspNet.SignalR;
 using SignalR_Mvc4.Infrastructure;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SignalR_Mvc4.Hubs
 {
     public class ChatHub : Hub
     {
-        public void Send(string message, string connectionId)
+        public void Send(string message, string recipientId)
         {
             var name = Context.User.Identity.Name;
 
-            if (connectionId == null)
+            if (recipientId == null)
                 Clients.All.addNewMessage(name, message);
             else
-                Clients.Client(connectionId).addNewMessage(string.Format("{0}(priv)", name), message);
+            {
+                Clients.Client(recipientId).addPrivateMessage(name, message, Context.ConnectionId);
+                Clients.Client(Context.ConnectionId).addPrivateMessage(name, message, recipientId);
+            }
         }
 
         public void GetClientsCount()

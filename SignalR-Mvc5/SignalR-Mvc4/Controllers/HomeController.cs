@@ -17,13 +17,6 @@ namespace SignalR_Mvc4.Controllers
             return View();
         }
 
-        //[Authorize]
-        //public ViewResult PrivChat(string id)
-        //{
-        //    var user = UserHandler.ConnectedUsers.FirstOrDefault(x => x.ConnectionId == id);
-        //    return View(user);
-        //}
-
         [Authorize]
         public PartialViewResult PrivChat(string id)
         {
