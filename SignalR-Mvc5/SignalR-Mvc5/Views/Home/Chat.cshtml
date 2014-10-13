@@ -1,0 +1,63 @@
+﻿@model  string[]
+
+@{
+    ViewBag.Title = "Chat";
+}
+
+<div class="container">
+    <h2>Chat</h2>
+    <input type="text" id="message"/>
+    <input type="button" id="sendmessage" value="Send!"/>
+    <input type="hidden" id="displayname"/>
+    <ul class="list-unstyled" id="discussion"></ul>
+</div>
+<div class="container">
+    <h2>Logged users</h2>
+    <ul class="list-unstyled" id="loggedusers">
+        @foreach (var loggedUser in @Model)
+        {
+            <li>@loggedUser</li>
+        }
+    </ul>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.signalR-2.1.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        $(function() {
+            var chat = $.connection.chatHub;
+            var users = $.connection.userActivityHub;
+
+            chat.client.addNewMessageToPage = function(name, message) {
+                $("#discussion").append('<li><strong>' + htmlEncode(name) + '</strong>: '
+                    + htmlEncode(message) + '</li>');
+            };
+
+            users.client.updateLoggedUsers = function (users) {
+                $('#loggedusers').html('');
+                $.each(users, function (index, value) {
+                    $('#loggedusers').append('<li>' + htmlEncode(value) + '</li>');
+                });
+            };
+
+            $('#displayname').val(prompt('Enter your name:', ''));
+            $('#message').focus();
+
+            $.connection.hub.start().done(function() {
+                users.server.addLoggedUser($('#displayname').val());
+
+                $('#sendmessage').click(function() {
+                    chat.server.send($('#displayname').val(), $('#message').val());
+                    $('#message').val('').focus();
+                });
+            });
+        });
+
+        function htmlEncode(value) {
+            var encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
+    </script>
+}

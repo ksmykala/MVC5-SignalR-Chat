@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Unavailable Page";
+}
+
+<h2>Unavailable Page</h2>
+
+<hr/>
+
+<h4>
+    <div class="alert alert-info" role="alert">
+        <span class="glyphicon glyphicon-remove-sign"></span> Unfortunately we do not provide this functionality right now :(
+    </div>
+</h4>
+
+<hr/>
+
+@if (!string.IsNullOrEmpty(ViewBag.ReturnUrl))
+{
+    <div>
+        <a href="@ViewBag.ReturnUrl" class="btn btn-default">
+            <span class="glyphicon glyphicon-arrow-left"></span>
+            Back
+        </a>
+    </div>
+}
